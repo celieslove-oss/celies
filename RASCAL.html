@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>라스칼 선수 데뷔 9주년 축하드려요</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+
+<style>
+    /* --- 調整信件視窗內的字體大小 --- */
+
+/* 1. 調整「暱稱」的大小 (From. xxx) */
+.paper h3 {
+font-size: 24px; /* 數字越大，字就越大 */
+margin-top: 0; /* 移除預設的頂部空白 */
+margin-bottom: 10px; /* 名字和分隔線的距離 */
+}
+
+/* 2. 調整「留言內容」的大小 */
+.paper p {
+font-size: 22px; /* 調整留言的字體大小 */
+line-height: 1.6; /* 調整行距，讓字不要全部擠在一起，更好閱讀 */
+}
+body {
+background: #0b0f1a;
+color: white;
+font-family: 'Nanum Pen Script','Hachi Maru Pop',sans-serif;
+text-align: center;
+}
+
+h1 {
+margin-top: 20px;
+letter-spacing: 2px;
+}
+
+#heart {
+display: grid;
+grid-template-columns: repeat(9, 55px);
+justify-content: center;
+gap: 10px;
+margin-top: 40px;
+}
+
+.envelope {
+width: 50px;
+height: 50px;
+background: #ff4d6d;
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+font-size: 22px;
+box-shadow: 0 0 10px rgba(255,77,109,0.5);
+animation: float 3s ease-in-out infinite;
+transition: transform 0.2s;
+}
+
+.envelope:hover {
+transform: scale(1.1);
+}
+
+@keyframes float {
+0% { transform: translateY(0); }
+50% { transform: translateY(-6px); }
+100% { transform: translateY(0); }
+}
+
+.paper {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: white;
+color: #333;
+width: 320px;
+padding: 20px;
+border-radius: 12px;
+z-index: 9999;
+box-shadow: 0 5px 25px rgba(0,0,0,0.8);
+}
+
+.paper button {
+margin-top: 15px;
+padding: 8px 16px;
+background: #ff4d6d;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+}
+
+.paper button:hover {
+background: #ff2a51;
+}
+
+/* --- 音樂播放按鈕的浮動與外觀樣式 --- */
+#musicBtn {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background: #ff4d6d;
+color: white;
+border: none;
+padding: 10px 15px;
+border-radius: 20px;
+cursor: pointer;
+font-size: 16px;
+box-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+z-index: 9999;
+transition: 0.3s;
+font-family: 'Hachi Maru Pop', sans-serif; /* 讓按鈕字體也變可愛 */
+}
+
+#musicBtn:hover {
+transform: scale(1.1);
+background: #ff2a51;
+}
+</style>
+</head>
+
+<body>
+
+<h1><img src="https://i.meee.com.tw/3KGjcWH.png" width="2%"> 라스칼 선수 데뷔 9주년 축하드려요<img src="https://i.meee.com.tw/3KGjcWH.png" width="2%"></h1>
+
+<div id="heart"></div>
+<div id="paperBox"></div>
+
+<audio id="bgm" loop>
+<source src="https://www.dropbox.com/scl/fi/pgvjdxcgq2ox48p2j3eza/Coldplay-Fix-You-Official-Video-_320k.mp3?rlkey=8quxv2kf8dee0egn2txz4bq8n&st=a5fx4ibd&raw=1" type="audio/mpeg">
+</audio>
+
+<script>
+// 已經幫你補上結尾的 c，變成正確的 /exec
+const API_URL = "https://script.google.com/macros/s/AKfycbyB1v5lr0Ir0h9l-ITfU6Tx3zr5Sz4zf93I8PYEIbS5z0OsnNv3Y6rLgLwTYM8OkcVVAQ/exec";
+let letters = [];
+
+// ❤️ 對稱愛心形狀 (9x7)
+const pattern = [
+0, 1, 1, 0, 0, 0, 1, 1, 0,
+1, 1, 1, 1, 0, 1, 1, 1, 1,
+1, 1, 1, 1, 1, 1, 1, 1, 1,
+0, 1, 1, 1, 1, 1, 1, 1, 0,
+0, 0, 1, 1, 1, 1, 1, 0, 0,
+0, 0, 0, 1, 1, 1, 0, 0, 0,
+0, 0, 0, 0, 1, 0, 0, 0, 0
+];
+
+// 📡 讀取真實資料
+async function loadData() {
+try {
+const res = await fetch(API_URL);
+if (!res.ok) throw new Error("網路回應失敗");
+letters = await res.json();
+} catch (error) {
+console.error("無法取得 API 資料:", error);
+alert("目前無法載入信件，請確認網路連線或稍後再試。");
+} finally {
+render();
+}
+}
+
+// 💌 畫愛心
+function render() {
+const heart = document.getElementById("heart");
+heart.innerHTML = "";
+
+let index = 0;
+
+pattern.forEach(p => {
+if (p === 1) {
+const box = document.createElement("div");
+box.className = "envelope";
+
+if (index < letters.length) {
+// 有真實信件的格子
+const letter = letters[index];
+box.innerHTML = "💌";
+
+box.onclick = () => {
+document.getElementById("paperBox").innerHTML = `
+<div class="paper">
+<h3>From. ${letter.닉네임}</h3>
+<hr>
+<p>${letter.메시지}</p>
+<button onclick="closePaper()">關閉</button>
+</div>
+`;
+};
+index++;
+} else {
+// 沒有信件時的佔位符 (灰色小愛心)
+box.innerHTML = "🤍";
+box.style.background = "#3a4156";
+box.style.boxShadow = "none";
+box.style.cursor = "default";
+box.style.animation = "none";
+}
+
+heart.appendChild(box);
+} else {
+// p === 0，用來排版的空白格子
+heart.appendChild(document.createElement("div"));
+}
+});
+}
+
+// 關閉信件視窗
+function closePaper() {
+document.getElementById("paperBox").innerHTML = "";
+}
+
+// 🚀 啟動
+loadData();
+
+// 控制音樂播放與暫停的邏輯
+let bgm = document.getElementById("bgm");
+let isPlaying = false;
+
+function toggleMusic() {
+let btn = document.getElementById("musicBtn");
+if (isPlaying) {
+bgm.pause();
+btn.innerHTML = "🎵 Play Music";
+} else {
+bgm.play();
+btn.innerHTML = "⏸️ Pause Music";
+}
+isPlaying = !isPlaying;
+}
+
+
+</script>
+
+
+
+<button id="musicBtn" onclick="toggleMusic()">🎵 Play Music</button>
+
+</body>
+</html>
