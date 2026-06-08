@@ -36,7 +36,7 @@ letter-spacing: 2px;
 
 #heart {
 display: grid;
-grid-template-columns: repeat(9, 55px);
+grid-template-columns: repeat(11, 50px);
 justify-content: center;
 gap: 10px;
 margin-top: 40px;
@@ -138,14 +138,16 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyB1v5lr0Ir0h9l-ITfU6Tx
 let letters = [];
 
 // ❤️ 對稱愛心形狀 (9x7)
+// ❤️ 全新 50 封信的完美對稱愛心形狀 (11x8)
 const pattern = [
-0, 1, 1, 0, 0, 0, 1, 1, 0,
-1, 1, 1, 1, 0, 1, 1, 1, 1,
-1, 1, 1, 1, 1, 1, 1, 1, 1,
-0, 1, 1, 1, 1, 1, 1, 1, 0,
-0, 0, 1, 1, 1, 1, 1, 0, 0,
-0, 0, 0, 1, 1, 1, 0, 0, 0,
-0, 0, 0, 0, 1, 0, 0, 0, 0
+  0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0,
+  0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+  0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+  0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+  0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0
 ];
 
 // 📡 讀取真實資料
